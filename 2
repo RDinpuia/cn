@@ -1,0 +1,41 @@
+#include <iostream>
+#include <unistd.h>
+using namespace std;
+
+int main()
+{
+    int frames[] = {1, 2, 3, 4};
+    int delaysPerFrame[] = {1, 2, 2, 1};
+
+    cout << "Sender has to send frames : ";
+    for (int i = 0; i < 4; i++)
+        cout << frames[i] << " ";
+    cout << endl << endl;
+
+    cout << "Sender\t\t\t\tReceiver" << endl;
+    const useconds_t shortDelay = 350000;
+
+    for (int i = 0; i < 4; i++)
+    {
+        int frame = frames[i];
+        int delayCount = delaysPerFrame[i];
+
+        cout << "Sending Frame : " << frame << "\t\t";
+        usleep(shortDelay);
+        cout << "Received Frame : " << frame << endl;
+
+        for (int d = 0; d < delayCount; d++)
+        {
+            usleep(shortDelay);
+            cout << "Delayed Ack" << endl;
+            usleep(shortDelay);
+            cout << "Sending Frame : " << frame << "\t\t";
+            usleep(shortDelay);
+            cout << "Received Frame : " << frame << " Duplicate" << endl;
+        }
+
+        usleep(shortDelay);
+        cout << "Acknowledgement : " << frame << endl;
+    }
+    return 0;
+}
