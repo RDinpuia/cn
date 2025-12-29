@@ -1,0 +1,41 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+class Station
+{
+    string name;
+public:
+    Station(string n) { name = n; }
+
+    void send()
+    {
+        if (rand() % 2)
+        {
+            cout << name << " detects carrier busy, deferring transmission." << endl;
+            return;
+        }
+
+        cout << name << " is sending a message." << endl;
+
+        if (rand() % 2)
+            cout << name << " detects a collision, stopping transmission." << endl;
+        else
+            cout << name << " successfully transmitted the message." << endl;
+    }
+};
+
+int main()
+{
+    srand(time(0));
+    Station A("Station A"), B("Station B");
+
+    for(int i=1;i<=10;i++)
+    {
+        cout << "Scenario " << i << endl;
+        A.send();
+        B.send();
+    }
+    return 0;
+}
