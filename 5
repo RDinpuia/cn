@@ -1,0 +1,53 @@
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+const int INF = INT_MAX;
+
+class Network
+{
+    int n;
+    vector<vector<int>> cost;
+public:
+    Network(int n):n(n),cost(n,vector<int>(n,INF)){}
+    void addLink(int u,int v,int c){ cost[u][v]=cost[v][u]=c; }
+
+    void dijkstra(int src)
+    {
+        vector<int> dist(n,INF), parent(n,-1);
+        vector<bool> visited(n,false);
+        dist[src]=0;
+
+        for(int i=0;i<n;i++)
+        {
+            int u=-1;
+            for(int j=0;j<n;j++)
+                if(!visited[j] && (u==-1 || dist[j]<dist[u])) u=j;
+
+            visited[u]=true;
+            for(int v=0;v<n;v++)
+                if(cost[u][v]!=INF && dist[u]+cost[u][v]<dist[v])
+                {
+                    dist[v]=dist[u]+cost[u][v];
+                    parent[v]=u;
+                }
+        }
+
+        for(int i=0;i<n;i++)
+            if(i!=src)
+                cout<<"Node "<<i<<" via "<<parent[i]<<" Cost "<<dist[i]<<endl;
+    }
+};
+
+int main()
+{
+    Network net(4);
+    net.addLink(0,1,4);
+    net.addLink(0,2,2);
+    net.addLink(1,2,5);
+    net.addLink(1,3,10);
+    net.addLink(2,3,1);
+    net.dijkstra(0);
+    return 0;
+}
