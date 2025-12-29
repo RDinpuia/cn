@@ -1,0 +1,44 @@
+#include<iostream>
+using namespace std;
+
+struct node
+{
+    unsigned dist[6];
+    unsigned from[6];
+} DVR[10];
+
+int main()
+{
+    int costmat[6][6];
+    int nodes;
+
+    cout<<"Enter number of nodes: ";
+    cin>>nodes;
+
+    cout<<"Enter cost matrix:\n";
+    for(int i=0;i<nodes;i++)
+        for(int j=0;j<nodes;j++)
+        {
+            cin>>costmat[i][j];
+            DVR[i].dist[j]=costmat[i][j];
+            DVR[i].from[j]=j;
+        }
+
+    for(int i=0;i<nodes;i++)
+        for(int j=0;j<nodes;j++)
+            for(int k=0;k<nodes;k++)
+                if(DVR[i].dist[j] > costmat[i][k] + DVR[k].dist[j])
+                {
+                    DVR[i].dist[j] = costmat[i][k] + DVR[k].dist[j];
+                    DVR[i].from[j] = k;
+                }
+
+    for(int i=0;i<nodes;i++)
+    {
+        cout<<"\nRouter "<<i+1;
+        for(int j=0;j<nodes;j++)
+            cout<<"\nNode "<<j+1<<" via "<<DVR[i].from[j]+1
+                <<" Distance "<<DVR[i].dist[j];
+    }
+    return 0;
+}
